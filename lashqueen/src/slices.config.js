@@ -5,7 +5,7 @@ import config from "./slicemachine.config.json";
 
 export const repositoryName = config.repositoryName;
 export const createClient = (config = {}) => {
-  const client = prismic.createClient(repositoryName, {
+  const client = prismic.createClient(lashqueen, {
     ...config,
   });
 

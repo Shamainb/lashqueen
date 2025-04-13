@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 
 export const components = {
-  hero: Hero,
-  product_grid: ProductGrid,
+  featured_products: dynamic(() => import("./FeaturedProducts")),
+  hero_banner: dynamic(() => import("./HeroBanner")),
   rich_text: dynamic(() => import("./RichText")),
 };

@@ -1,7 +1,7 @@
+// src/components/ProductCard.tsx
 import { PrismicNextImage } from "@prismicio/next";
 import { PrismicLink } from "@prismicio/react";
-import { useContext } from "react";
-import { CartContext } from "@/context/CartContext";
+import { useCart } from "@/context/CartContext";
 import "./ProductCard.css";
 
 interface ProductCardProps {
@@ -9,41 +9,32 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const { addToCart } = useContext(CartContext);
-
-  // Extract product data
-  const { data } = product;
-  const { name, price, sale_price, main_image, uid } = data;
-  
-  const productPrice = sale_price || price;
-  const isOnSale = sale_price && sale_price < price;
-
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    addToCart({
-      id: product.id,
-      uid,
-      name,
-      price: productPrice,
-      image: main_image.url,
-      quantity: 1
-    });
-  };
+  const { addToCart } = useCart();
 
   return (
     <div className="product-card group">
       <PrismicLink document={product} className="product-link">
         <div className="product-image-container">
           <PrismicNextImage
-            field={main_image}
+            field={product.data.product_image}
             className="product-image"
-            fallbackAlt={name || "Product image"}
+            fallbackAlt={product.data.product_name || "Product image"}
           />
           <div className="product-overlay">
             <button 
               className="add-to-cart-btn"
-              onClick={handleAddToCart}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                addToCart({
+                  id: product.id,
+                  uid: product.uid,
+                  name: product.data.product_name,
+                  price: product.data.price,
+                  image: product.data.product_image.url,
+                  quantity: 1
+                });
+              }}
             >
               Add to Cart
             </button>
@@ -51,16 +42,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </div>
         
         <div className="product-info">
-          <h3 className="product-title">{name}</h3>
+          <h3 className="product-title">{product.data.product_name}</h3>
           <div className="product-price">
-            {isOnSale ? (
-              <>
-                <span className="sale-price">${sale_price.toFixed(2)}</span>
-                <span className="original-price">${price.toFixed(2)}</span>
-              </>
-            ) : (
-              <span>${price.toFixed(2)}</span>
-            )}
+            <span>${product.data.price.toFixed(2)}</span>
           </div>
         </div>
       </PrismicLink>

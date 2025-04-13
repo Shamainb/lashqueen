@@ -1,12 +1,15 @@
 // src/slices/ProductGrid/index.tsx
 import { Content } from "@prismicio/client";
 import { PrismicRichText, SliceComponentProps } from "@prismicio/react";
-import { PrismicNextImage } from "@prismicio/next";
+import { PrismicNextImage, PrismicNextLink } from "@prismicio/next";
 import Link from "next/link";
+import { useCart } from "@/context/CartContext";
 
 export type ProductGridProps = SliceComponentProps<Content.ProductGridSlice>;
 
 const ProductGrid = ({ slice }: ProductGridProps) => {
+  const { addToCart } = useCart();
+
   return (
     <section className="py-16 px-4 max-w-7xl mx-auto">
       <h2 className="text-3xl font-bold text-center mb-12">
@@ -29,7 +32,6 @@ const ProductGrid = ({ slice }: ProductGridProps) => {
                     {item.products.data.product_name}
                   </h3>
                   <p className="text-gray-600 mb-4 line-clamp-2">
-                    {/* Simple text display without RichText for preview */}
                     {item.products.data.description?.[0]?.text}
                   </p>
                   <div className="flex justify-between items-center">
@@ -40,7 +42,14 @@ const ProductGrid = ({ slice }: ProductGridProps) => {
                       className="bg-pink-600 hover:bg-pink-700 text-white py-2 px-4 rounded transition duration-300"
                       onClick={(e) => {
                         e.preventDefault();
-                        // Add to cart functionality will go here
+                        addToCart({
+                          id: item.products.id,
+                          uid: item.products.uid,
+                          name: item.products.data.product_name,
+                          price: item.products.data.price,
+                          image: item.products.data.product_image.url,
+                          quantity: 1
+                        });
                       }}
                     >
                       Add to Cart

@@ -3,6 +3,10 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Custom styles */
+.prose {
+  max-width: 100%;
+}
 
 .prose a {
   @apply text-pink-600 hover:text-pink-700 underline;
@@ -13,4 +17,35 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+/* Product card hover effect */
+.product-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Button transitions */
+.button-transition {
+  transition: all 0.3s ease;
+}
+
+/* Hero section overlay */
+.hero-overlay {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Cart item animation */
+@keyframes cartItemAdded {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.cart-item-added {
+  animation: cartItemAdded 0.3s ease;
 }
